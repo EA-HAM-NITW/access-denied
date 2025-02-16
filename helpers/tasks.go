@@ -14,6 +14,7 @@ type TaskPopulater struct {
 }
 
 type GameStateValue struct {
+	CurrentTask  int
 	Task01Answer string
 }
 
@@ -71,6 +72,7 @@ func (p TaskPopulater) task01() {
 
 		if pincode == strconv.Itoa(110000+p.teamNumber) {
 			gameState[p.teamNumber] = GameStateValue{
+				CurrentTask:  1,
 				Task01Answer: lat + " " + long,
 			}
 			break
