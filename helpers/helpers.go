@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"errors"
 	"fmt"
 	"math/rand"
 	"os"
@@ -23,11 +24,26 @@ func ExecuteCmd(expr string) {
 	cmd := exec.Command(parts[0], parts[1:]...)
 
 	cmd.Stdin = os.Stdin
-	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
 	if err := cmd.Run(); err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
+}
+
+func ReadOrCreateFile(path string) ([]byte, error) {
+	if _, err := os.Stat(path); err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			if err := os.WriteFile(path, []byte("{}"), 0644); err != nil {
+				return nil, err
+			}
+
+			return []byte("{}"), nil
+		}
+
+		return nil, err
+	}
+
+	return os.ReadFile(path)
 }
