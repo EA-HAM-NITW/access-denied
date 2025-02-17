@@ -13,12 +13,9 @@ type TaskPopulater struct {
 	teamNumber  int
 }
 
-type GameStateValue struct {
-	CurrentTask  int
+type GameState struct {
 	Task01Answer string
 }
-
-type GameState map[int]GameStateValue
 
 func NewTaskPopulater(user, admin string, teamNumber int) TaskPopulater {
 	return TaskPopulater{
@@ -40,7 +37,7 @@ func (p TaskPopulater) task01() {
 
 	ExecuteCmd(fmt.Sprintf("sudo touch /home/%s/404/001/script.sh", p.user))
 	ExecuteCmd(fmt.Sprintf("sudo chown %s:%s /home/%s/404/001/script.sh", p.admin, p.user, p.user))
-	ExecuteCmd(fmt.Sprintf("sudo chmod 777 /home/%s/404/001/script.sh", p.user))
+	ExecuteCmd(fmt.Sprintf("sudo chmod 770 /home/%s/404/001/script.sh", p.user))
 
 	pincodeDataset, err := os.Open("datasets/pincode.csv")
 	if err != nil {
@@ -48,14 +45,14 @@ func (p TaskPopulater) task01() {
 		os.Exit(1)
 	}
 
-	gameStateFilePath := fmt.Sprintf("/home/%s/.ad_game_state.json", p.admin)
+	gameStateFilePath := fmt.Sprintf("/home/%s/.game_state.json", p.user)
 	gameStateBytes, err := ReadOrCreateFile(gameStateFilePath)
 	if err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
 
-	gameState := make(GameState)
+	var gameState GameState
 
 	if err := json.Unmarshal(gameStateBytes, &gameState); err != nil {
 		fmt.Println(err.Error())
@@ -71,8 +68,7 @@ func (p TaskPopulater) task01() {
 		long := record[10]
 
 		if pincode == strconv.Itoa(110000+p.teamNumber) {
-			gameState[p.teamNumber] = GameStateValue{
-				CurrentTask:  1,
+			gameState = GameState{
 				Task01Answer: lat + " " + long,
 			}
 			break
