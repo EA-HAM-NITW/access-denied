@@ -32,6 +32,22 @@ func ExecuteCmd(expr string) {
 	}
 }
 
+func GetCmdOutput(expr string) string {
+	parts := strings.Split(expr, " ")
+	cmd := exec.Command(parts[0], parts[1:]...)
+	outputBytes, err := cmd.Output()
+	if err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
+
+	output := strings.TrimSpace(string(outputBytes))
+	output = strings.TrimPrefix(output, "\"")
+	output = strings.TrimSuffix(output, "\"")
+
+	return output
+}
+
 func ReadOrCreateFile(path string) ([]byte, error) {
 	if _, err := os.Stat(path); err != nil {
 		if errors.Is(err, os.ErrNotExist) {

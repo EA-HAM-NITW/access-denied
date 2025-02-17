@@ -1,12 +1,25 @@
 package commands
 
 import (
+	"accessdenied/helpers"
+	"encoding/json"
 	"fmt"
 	"os"
-	"os/exec"
 	"path/filepath"
-	"strings"
+	"strconv"
 )
+
+func task01Evaluator(cmd, desiredOutput string) {
+	// TODO: check if the command has specific keywords like `grep` or `awk`
+	output := helpers.GetCmdOutput(cmd)
+
+	if output == desiredOutput {
+		// TODO: improve these log messages
+		fmt.Println("correct")
+	} else {
+		fmt.Println("wrong")
+	}
+}
 
 func EvalCmdHandler() {
 	currentDir, err := os.Getwd()
@@ -30,14 +43,32 @@ func EvalCmdHandler() {
 	}
 
 	answerCmd := string(answerCmdBytes)
-	cmdParts := strings.Split(answerCmd, " ")
 
-	cmd := exec.Command(cmdParts[0], cmdParts[1:]...)
-	output, err := cmd.Output()
+	homeDir, _ := os.UserHomeDir()
+	gameStateBytes, err := os.ReadFile(filepath.Join(homeDir, ".game_state.json"))
 	if err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
 
-	fmt.Println(string(output))
+	var gameState helpers.GameState
+
+	if err := json.Unmarshal(gameStateBytes, &gameState); err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
+
+	currentTask, err := strconv.Atoi(filepath.Base(currentDir))
+	if err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
+
+	switch currentTask {
+	case 1:
+		task01Evaluator(answerCmd, gameState.Task01Answer)
+	default:
+		fmt.Println("invalid task number")
+		os.Exit(1)
+	}
 }

@@ -30,14 +30,16 @@ func (p TaskPopulater) Populate() {
 }
 
 func (p TaskPopulater) task01() {
-	ExecuteCmd(fmt.Sprintf("sudo mkdir -p /home/%s/404/001", p.user))
-	ExecuteCmd(fmt.Sprintf("sudo cp datasets/pincode.csv /home/%s/404/001", p.user))
-	ExecuteCmd(fmt.Sprintf("sudo chown %s:%s /home/%s/404/001/pincode.csv", p.admin, p.user, p.user))
-	ExecuteCmd(fmt.Sprintf("sudo chmod 640 /home/%s/404/001/pincode.csv", p.user))
+	task01Dir := fmt.Sprintf("/home/%s/404/01", p.user)
 
-	ExecuteCmd(fmt.Sprintf("sudo touch /home/%s/404/001/script.sh", p.user))
-	ExecuteCmd(fmt.Sprintf("sudo chown %s:%s /home/%s/404/001/script.sh", p.admin, p.user, p.user))
-	ExecuteCmd(fmt.Sprintf("sudo chmod 770 /home/%s/404/001/script.sh", p.user))
+	ExecuteCmd(fmt.Sprintf("sudo mkdir -p %s", task01Dir))
+	ExecuteCmd(fmt.Sprintf("sudo cp datasets/pincode.csv %s", task01Dir))
+	ExecuteCmd(fmt.Sprintf("sudo chown %s:%s %s/pincode.csv", p.admin, p.user, task01Dir))
+	ExecuteCmd(fmt.Sprintf("sudo chmod 640 %s/pincode.csv", task01Dir))
+
+	ExecuteCmd(fmt.Sprintf("sudo touch %s/script.sh", task01Dir))
+	ExecuteCmd(fmt.Sprintf("sudo chown %s:%s %s/script.sh", p.admin, p.user, task01Dir))
+	ExecuteCmd(fmt.Sprintf("sudo chmod 770 %s/script.sh", task01Dir))
 
 	pincodeDataset, err := os.Open("datasets/pincode.csv")
 	if err != nil {
@@ -85,4 +87,12 @@ func (p TaskPopulater) task01() {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
+}
+
+func (p TaskPopulater) task02() {
+	task02Dir := fmt.Sprintf("/home/%s/404/02", p.user)
+
+	ExecuteCmd(fmt.Sprintf("sudo mkdir -p %s", task02Dir))
+	ExecuteCmd(fmt.Sprintf("sudo chown %s:%s %s", p.admin, p.admin, task02Dir))
+	ExecuteCmd(fmt.Sprintf("sudo chmod -R 700 %s", task02Dir))
 }
