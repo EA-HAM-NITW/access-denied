@@ -32,7 +32,7 @@ func GenCmdHandler() {
 
 	for i := 1; i < len(records); i++ {
 		name := records[i][0]
-		password := helpers.RandomString(10)
+		password := records[i][1] + "RAM"
 
 		fmt.Printf("generating an user with name %s and password %s\n", name, password)
 
