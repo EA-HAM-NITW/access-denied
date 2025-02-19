@@ -1,0 +1,2 @@
+
+echo -e "\033[1;32mHello <USERNAME>! Congratulations for hacking into the Phantom's machine! But this is not it, the real challenge begins now.\n\nHere are a instructions and guidelines for this segment:\n\n1. You will be presented with clues in each folder\n2. Each folder will contain README.MD\n3. You can run \`mdless README.MD\` to read the instructions\n4. Follow the instructions, type your answer in \`script.sh\`\n5. Run the eval command, it should automatically evaluate and unlock the next set of folders\033[0m"
