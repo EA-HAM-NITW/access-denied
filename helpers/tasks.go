@@ -26,7 +26,7 @@ func NewTaskPopulater(user, admin string, teamNumber int) TaskPopulater {
 }
 
 func (p TaskPopulater) Populate() {
-	p.task01()
+	p.task04()
 }
 
 func (p TaskPopulater) task01() {
@@ -95,4 +95,19 @@ func (p TaskPopulater) task02() {
 	ExecuteCmd(fmt.Sprintf("sudo mkdir -p %s", task02Dir))
 	ExecuteCmd(fmt.Sprintf("sudo chown %s:%s %s", p.admin, p.admin, task02Dir))
 	ExecuteCmd(fmt.Sprintf("sudo chmod -R 700 %s", task02Dir))
+}
+
+func (p TaskPopulater) task04() {
+	task04Dir := fmt.Sprintf("/home/%s/tasks/04", p.user)
+	fmt.Println("yes")
+	ExecuteCmd(fmt.Sprintf("sudo mkdir -p %s", task04Dir))
+	fmt.Println("CREATED HOME DIR")
+	ExecuteCmd(fmt.Sprintf("sudo cp -r public/files_output %s", task04Dir))
+
+	ExecuteCmd(fmt.Sprintf("sudo chown -R %s:%s %s", p.admin, p.user, task04Dir))
+	ExecuteCmd(fmt.Sprintf("sudo chmod -R 640 %s", task04Dir))
+
+	ExecuteCmd(fmt.Sprintf("sudo touch %s/script.sh", task04Dir))
+	ExecuteCmd(fmt.Sprintf("sudo chown %s:%s %s/script.sh", p.admin, p.user, task04Dir))
+	ExecuteCmd(fmt.Sprintf("sudo chmod 770 %s/script.sh", task04Dir))
 }
