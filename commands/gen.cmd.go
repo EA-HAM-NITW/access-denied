@@ -36,7 +36,7 @@ func GenCmdHandler() {
 
 		fmt.Printf("generating an user with name %s and password %s\n", name, password)
 
-		/*helpers.ExecuteCmd(fmt.Sprintf("sudo useradd -m -s /bin/bash %s", name))
+		helpers.ExecuteCmd(fmt.Sprintf("sudo useradd -m -s /bin/bash %s", name))
 		helpers.ExecuteCmd(fmt.Sprintf("echo %s:%s | sudo chpasswd", name, password))
 		helpers.ExecuteCmd(fmt.Sprintf("sudo mkdir -p /home/%s/404", name))
 		helpers.ExecuteCmd(fmt.Sprintf("sudo chown -R %s:%s /home/%s", admin, name, name))
@@ -69,7 +69,7 @@ func GenCmdHandler() {
 		}
 
 		helpers.ExecuteCmd(fmt.Sprintf("sudo chown %s:%s /home/%s/.bashrc", name, admin, name))
-		helpers.ExecuteCmd(fmt.Sprintf("sudo chmod 644 /home/%s/.bashrc", name))*/
+		helpers.ExecuteCmd(fmt.Sprintf("sudo chmod 644 /home/%s/.bashrc", name))
 
 		taskPopulater := helpers.NewTaskPopulater(name, admin, i)
 		taskPopulater.Populate()

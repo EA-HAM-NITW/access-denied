@@ -15,6 +15,7 @@ type TaskPopulater struct {
 
 type GameState struct {
 	Task01Answer string
+	Task04Answer string
 }
 
 func NewTaskPopulater(user, admin string, teamNumber int) TaskPopulater {
@@ -26,6 +27,8 @@ func NewTaskPopulater(user, admin string, teamNumber int) TaskPopulater {
 }
 
 func (p TaskPopulater) Populate() {
+	p.task01()
+	p.task02()
 	p.task04()
 }
 
@@ -98,7 +101,7 @@ func (p TaskPopulater) task02() {
 }
 
 func (p TaskPopulater) task04() {
-	task04Dir := fmt.Sprintf("/home/%s/tasks/04", p.user)
+	task04Dir := fmt.Sprintf("/home/%s/404/04", p.user)
 	fmt.Println("yes")
 	ExecuteCmd(fmt.Sprintf("sudo mkdir -p %s", task04Dir))
 	fmt.Println("CREATED HOME DIR")
@@ -110,4 +113,20 @@ func (p TaskPopulater) task04() {
 	ExecuteCmd(fmt.Sprintf("sudo touch %s/script.sh", task04Dir))
 	ExecuteCmd(fmt.Sprintf("sudo chown %s:%s %s/script.sh", p.admin, p.user, task04Dir))
 	ExecuteCmd(fmt.Sprintf("sudo chmod 770 %s/script.sh", task04Dir))
+
+	gameStateFilePath := fmt.Sprintf("/home/%s/.game_state.json", p.user)
+	gameStateBytes, err := ReadOrCreateFile(gameStateFilePath)
+	if err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
+
+	var gameState GameState
+
+	if err := json.Unmarshal(gameStateBytes, &gameState); err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
+
+	gameState.Task04Answer = "phanek96 phaneq47 phangv03 phanif91 phanig96 phanlq97 phanmn94 phanou77 phanqw76 phanrj03 phanry94 phanvm88"
 }
