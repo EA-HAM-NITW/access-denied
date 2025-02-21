@@ -128,5 +128,7 @@ func (p TaskPopulater) task04() {
 		os.Exit(1)
 	}
 
+	gameState.Task03Answer = "phan"
 	gameState.Task04Answer = "phanek96 phaneq47 phangv03 phanif91 phanig96 phanlq97 phanmn94 phanou77 phanqw76 phanrj03 phanry94 phanvm88"
+	gameState.Task06Answer = "AccessGranted"
 }
