@@ -24,6 +24,16 @@ func task01Evaluator(cmd, desiredOutput string) {
 	}
 }
 
+func task03Evaluator(cmd, desiredOutput string) {
+	output := helpers.GetCmdOutput(cmd)
+
+	if output == desiredOutput {
+		fmt.Println("correct")
+	} else {
+		fmt.Println("wrong")
+	}
+}
+
 func task04Evaluator(cmd, desiredOutput string) {
 	if !helpers.CheckForCmdKeywords(cmd, "grep", "awk") {
 		fmt.Println("wrong cmd keywords. use either `grep` or `awk`")
@@ -85,6 +95,8 @@ func EvalCmdHandler() {
 	switch currentTask {
 	case 1:
 		task01Evaluator(answerCmd, gameState.Task01Answer)
+	case 3:
+		task03Evaluator(answerCmd, gameState.Task03Answer)
 	case 4:
 		task04Evaluator(answerCmd, gameState.Task04Answer)
 	default:

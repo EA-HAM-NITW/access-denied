@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strconv"
 )
 
@@ -15,6 +16,7 @@ type TaskPopulater struct {
 
 type GameState struct {
 	Task01Answer string
+	Task03Answer string
 	Task04Answer string
 }
 
@@ -29,7 +31,23 @@ func NewTaskPopulater(user, admin string, teamNumber int) TaskPopulater {
 func (p TaskPopulater) Populate() {
 	p.task01()
 	p.task02()
+	p.task03()
 	p.task04()
+}
+
+func (p TaskPopulater) createScriptFile(dir string) {
+	ExecuteCmd(fmt.Sprintf("sudo touch %s/script.sh", dir))
+	ExecuteCmd(fmt.Sprintf("sudo chown %s:%s %s/script.sh", p.admin, p.user, dir))
+	ExecuteCmd(fmt.Sprintf("sudo chmod 770 %s/script.sh", dir))
+}
+
+func (p TaskPopulater) copyTaskInfoFile(dir string) {
+	taskNumberStr := filepath.Base(dir)
+	taskInfoFilePath := fmt.Sprintf("public/tasks/%s/t%s.md", taskNumberStr, taskNumberStr)
+
+	ExecuteCmd(fmt.Sprintf("sudo cp %s %s/readme.md", taskInfoFilePath, dir))
+	ExecuteCmd(fmt.Sprintf("sudo chown %s:%s %s/readme.md", p.admin, p.user, dir))
+	ExecuteCmd(fmt.Sprintf("sudo chmod 640 %s/readme.md", dir))
 }
 
 func (p TaskPopulater) task01() {
@@ -41,13 +59,8 @@ func (p TaskPopulater) task01() {
 	ExecuteCmd(fmt.Sprintf("sudo chown %s:%s %s/pincode.csv", p.admin, p.user, task01Dir))
 	ExecuteCmd(fmt.Sprintf("sudo chmod 640 %s/pincode.csv", task01Dir))
 
-	ExecuteCmd(fmt.Sprintf("sudo cp public/tasks/t01.md %s", task01Dir))
-	ExecuteCmd(fmt.Sprintf("sudo chown %s:%s %s/t01.md", p.admin, p.user, task01Dir))
-	ExecuteCmd(fmt.Sprintf("sudo chmod 640 %s/t01.md", task01Dir))
-
-	ExecuteCmd(fmt.Sprintf("sudo touch %s/script.sh", task01Dir))
-	ExecuteCmd(fmt.Sprintf("sudo chown %s:%s %s/script.sh", p.admin, p.user, task01Dir))
-	ExecuteCmd(fmt.Sprintf("sudo chmod 770 %s/script.sh", task01Dir))
+	p.copyTaskInfoFile(task01Dir)
+	p.createScriptFile(task01Dir)
 
 	pincodeDataset, err := os.Open("datasets/pincode.csv")
 	if err != nil {
@@ -99,23 +112,57 @@ func (p TaskPopulater) task02() {
 	task02Dir := fmt.Sprintf("/home/%s/404/02", p.user)
 
 	ExecuteCmd(fmt.Sprintf("sudo mkdir -p %s", task02Dir))
-	ExecuteCmd(fmt.Sprintf("sudo chown %s:%s %s", p.admin, p.admin, task02Dir))
-	ExecuteCmd(fmt.Sprintf("sudo chmod -R 700 %s", task02Dir))
 
-	ExecuteCmd(fmt.Sprintf("sudo cp public/tasks/t02.md %s", task02Dir))
-	ExecuteCmd(fmt.Sprintf("sudo chown %s:%s %s/t02.md", p.admin, p.user, task02Dir))
-	ExecuteCmd(fmt.Sprintf("sudo chmod 640 %s/t02.md", task02Dir))
+	p.createScriptFile(task02Dir)
+	p.copyTaskInfoFile(task02Dir)
+}
+
+func (p TaskPopulater) task03() {
+	task03Dir := fmt.Sprintf("/home/%s/404/03", p.user)
+
+	ExecuteCmd(fmt.Sprintf("sudo mkdir -p %s", task03Dir))
+
+	ExecuteCmd(fmt.Sprintf("sudo cp -r public/tasks/03/files %s/files", task03Dir))
+
+	p.createScriptFile(task03Dir)
+	p.copyTaskInfoFile(task03Dir)
+
+	gameStateFilePath := fmt.Sprintf("/home/%s/.game_state.json", p.user)
+	gameStateBytes, err := ReadOrCreateFile(gameStateFilePath)
+	if err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
+
+	var gameState GameState
+
+	if err := json.Unmarshal(gameStateBytes, &gameState); err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
+
+	gameState.Task03Answer = "a4c9vx.phan bfn5wy.phan i3s1fd.phan j5d6ch.phan lm6t0g.phan oy2p8n.phan rk7w4q.phan u8e2hj.phan xqr7p2.phan zt9k3l.phan"
+
+	gameStateBytes, err = json.Marshal(gameState)
+	if err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
+
+	if err := os.WriteFile(gameStateFilePath, gameStateBytes, 0644); err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
 }
 
 func (p TaskPopulater) task04() {
 	task04Dir := fmt.Sprintf("/home/%s/404/04", p.user)
 
 	ExecuteCmd(fmt.Sprintf("sudo mkdir -p %s", task04Dir))
-	ExecuteCmd(fmt.Sprintf("sudo cp -r public/files_output %s", task04Dir))
+	ExecuteCmd(fmt.Sprintf("sudo cp -r public/tasks/04/files %s/files", task04Dir))
 
-	ExecuteCmd(fmt.Sprintf("sudo touch %s/script.sh", task04Dir))
-	ExecuteCmd(fmt.Sprintf("sudo chown %s:%s %s/script.sh", p.admin, p.user, task04Dir))
-	ExecuteCmd(fmt.Sprintf("sudo chmod 770 %s/script.sh", task04Dir))
+	p.createScriptFile(task04Dir)
+	p.copyTaskInfoFile(task04Dir)
 
 	gameStateFilePath := fmt.Sprintf("/home/%s/.game_state.json", p.user)
 	gameStateBytes, err := ReadOrCreateFile(gameStateFilePath)
@@ -143,8 +190,4 @@ func (p TaskPopulater) task04() {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
-
-	ExecuteCmd(fmt.Sprintf("sudo cp public/tasks/t04.md %s", task04Dir))
-	ExecuteCmd(fmt.Sprintf("sudo chown %s:%s %s/t04.md", p.admin, p.user, task04Dir))
-	ExecuteCmd(fmt.Sprintf("sudo chmod 640 %s/t04.md", task04Dir))
 }
