@@ -36,9 +36,14 @@ func (p TaskPopulater) task01() {
 	task01Dir := fmt.Sprintf("/home/%s/404/01", p.user)
 
 	ExecuteCmd(fmt.Sprintf("sudo mkdir -p %s", task01Dir))
+
 	ExecuteCmd(fmt.Sprintf("sudo cp datasets/pincode.csv %s", task01Dir))
 	ExecuteCmd(fmt.Sprintf("sudo chown %s:%s %s/pincode.csv", p.admin, p.user, task01Dir))
 	ExecuteCmd(fmt.Sprintf("sudo chmod 640 %s/pincode.csv", task01Dir))
+
+	ExecuteCmd(fmt.Sprintf("sudo cp public/tasks/t01.md %s", task01Dir))
+	ExecuteCmd(fmt.Sprintf("sudo chown %s:%s %s/t01.md", p.admin, p.user, task01Dir))
+	ExecuteCmd(fmt.Sprintf("sudo chmod 640 %s/t01.md", task01Dir))
 
 	ExecuteCmd(fmt.Sprintf("sudo touch %s/script.sh", task01Dir))
 	ExecuteCmd(fmt.Sprintf("sudo chown %s:%s %s/script.sh", p.admin, p.user, task01Dir))
@@ -98,6 +103,10 @@ func (p TaskPopulater) task02() {
 	ExecuteCmd(fmt.Sprintf("sudo mkdir -p %s", task02Dir))
 	ExecuteCmd(fmt.Sprintf("sudo chown %s:%s %s", p.admin, p.admin, task02Dir))
 	ExecuteCmd(fmt.Sprintf("sudo chmod -R 700 %s", task02Dir))
+
+	ExecuteCmd(fmt.Sprintf("sudo cp public/tasks/t02.md %s", task02Dir))
+	ExecuteCmd(fmt.Sprintf("sudo chown %s:%s %s/t02.md", p.admin, p.user, task02Dir))
+	ExecuteCmd(fmt.Sprintf("sudo chmod 640 %s/t02.md", task02Dir))
 }
 
 func (p TaskPopulater) task04() {
@@ -127,4 +136,19 @@ func (p TaskPopulater) task04() {
 	}
 
 	gameState.Task04Answer = "phanek96 phaneq47 phangv03 phanif91 phanig96 phanlq97 phanmn94 phanou77 phanqw76 phanrj03 phanry94 phanvm88"
+
+	gameStateBytes, err = json.Marshal(gameState)
+	if err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
+
+	if err := os.WriteFile(gameStateFilePath, gameStateBytes, 0644); err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
+
+	ExecuteCmd(fmt.Sprintf("sudo cp public/tasks/t04.md %s", task04Dir))
+	ExecuteCmd(fmt.Sprintf("sudo chown %s:%s %s/t04.md", p.admin, p.user, task04Dir))
+	ExecuteCmd(fmt.Sprintf("sudo chmod 640 %s/t04.md", task04Dir))
 }
