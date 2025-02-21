@@ -60,3 +60,14 @@ func ReadOrCreateFile(path string) ([]byte, error) {
 
 	return os.ReadFile(path)
 }
+
+func CheckForCmdKeywords(expr string, keywords ...string) bool {
+	for _, k := range keywords {
+		cmd := strings.Split(expr, " ")[0]
+		if !strings.Contains(cmd, k) {
+			return false
+		}
+	}
+
+	return true
+}

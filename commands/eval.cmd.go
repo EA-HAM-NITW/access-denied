@@ -10,11 +10,14 @@ import (
 )
 
 func task01Evaluator(cmd, desiredOutput string) {
-	// TODO: check if the command has specific keywords like `grep` or `awk`
+	if !helpers.CheckForCmdKeywords(cmd, "grep", "awk") {
+		fmt.Println("wrong cmd keywords. use either `grep` or `awk`")
+		os.Exit(1)
+	}
+
 	output := helpers.GetCmdOutput(cmd)
 
 	if output == desiredOutput {
-		// TODO: improve these log messages
 		fmt.Println("correct")
 	} else {
 		fmt.Println("wrong")
@@ -22,11 +25,14 @@ func task01Evaluator(cmd, desiredOutput string) {
 }
 
 func task04Evaluator(cmd, desiredOutput string) {
-	// TODO: check if the command has specific keywords like `grep` or `awk`
+	if !helpers.CheckForCmdKeywords(cmd, "grep", "awk") {
+		fmt.Println("wrong cmd keywords. use either `grep` or `awk`")
+		os.Exit(1)
+	}
+
 	output := helpers.GetCmdOutput(cmd)
 
 	if output == desiredOutput {
-		// TODO: improve these log messages
 		fmt.Println("correct")
 	} else {
 		fmt.Println("wrong")
