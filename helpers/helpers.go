@@ -71,3 +71,28 @@ func CheckForCmdKeywords(expr string, keywords ...string) bool {
 
 	return true
 }
+
+func SliceToFormattedString(slice []string) string {
+	if len(slice) == 0 {
+		return ""
+	}
+
+	if len(slice) == 1 {
+		return "`" + slice[0] + "`"
+	}
+
+	var result strings.Builder
+
+	for i := 0; i < len(slice)-1; i++ {
+		result.WriteString("`" + slice[i] + "`")
+
+		if i < len(slice)-2 {
+			result.WriteString(", ")
+		} else {
+			result.WriteString(" or ")
+		}
+	}
+
+	result.WriteString("`" + slice[len(slice)-1] + "`")
+	return result.String()
+}

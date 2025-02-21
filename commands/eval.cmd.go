@@ -9,37 +9,7 @@ import (
 	"strconv"
 )
 
-func task01Evaluator(cmd, desiredOutput string) {
-	if !helpers.CheckForCmdKeywords(cmd, "grep", "awk") {
-		fmt.Println("wrong cmd keywords. use either `grep` or `awk`")
-		os.Exit(1)
-	}
-
-	output := helpers.GetCmdOutput(cmd)
-
-	if output == desiredOutput {
-		fmt.Println("correct")
-	} else {
-		fmt.Println("wrong")
-	}
-}
-
-func task03Evaluator(cmd, desiredOutput string) {
-	output := helpers.GetCmdOutput(cmd)
-
-	if output == desiredOutput {
-		fmt.Println("correct")
-	} else {
-		fmt.Println("wrong")
-	}
-}
-
-func task04Evaluator(cmd, desiredOutput string) {
-	if !helpers.CheckForCmdKeywords(cmd, "grep", "awk") {
-		fmt.Println("wrong cmd keywords. use either `grep` or `awk`")
-		os.Exit(1)
-	}
-
+func taskEvaluator(cmd, desiredOutput string) {
 	output := helpers.GetCmdOutput(cmd)
 
 	if output == desiredOutput {
@@ -94,11 +64,13 @@ func EvalCmdHandler() {
 
 	switch currentTask {
 	case 1:
-		task01Evaluator(answerCmd, gameState.Task01Answer)
+		taskEvaluator(answerCmd, gameState.Task01Answer)
+	case 2:
+		taskEvaluator(answerCmd, gameState.Task02Answer)
 	case 3:
-		task03Evaluator(answerCmd, gameState.Task03Answer)
+		taskEvaluator(answerCmd, gameState.Task03Answer)
 	case 4:
-		task04Evaluator(answerCmd, gameState.Task04Answer)
+		taskEvaluator(answerCmd, gameState.Task04Answer)
 	default:
 		fmt.Println("invalid task number")
 		os.Exit(1)
