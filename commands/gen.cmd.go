@@ -44,8 +44,6 @@ func GenCmdHandler() {
 		helpers.ExecuteCmd(fmt.Sprintf("sudo chown %s:%s /home/%s/cli", admin, name, name))
 		helpers.ExecuteCmd(fmt.Sprintf("sudo chmod 750 /home/%s/cli", name))
 
-		fmt.Print("Hello, World!")
-
 		bashrcPath := fmt.Sprintf("/home/%s/.bashrc", name)
 		f, err := os.OpenFile(bashrcPath, os.O_APPEND|os.O_WRONLY, 0644)
 		if err != nil {
@@ -62,11 +60,7 @@ func GenCmdHandler() {
 			}
 		}
 
-		if _, err := f.WriteString("alias check='~/cli check'"); err != nil {
-			fmt.Println(err.Error())
-			continue
-		}
-
+		helpers.ExecuteCmd(fmt.Sprintf("sudo cp public/.bashrc /home/%s/.bashrc", name))
 		helpers.ExecuteCmd(fmt.Sprintf("sudo chown %s:%s /home/%s/.bashrc", name, admin, name))
 		helpers.ExecuteCmd(fmt.Sprintf("sudo chmod 644 /home/%s/.bashrc", name))
 

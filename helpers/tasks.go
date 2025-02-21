@@ -102,9 +102,7 @@ func (p TaskPopulater) task02() {
 
 func (p TaskPopulater) task04() {
 	task04Dir := fmt.Sprintf("/home/%s/404/04", p.user)
-	fmt.Println("yes")
 	ExecuteCmd(fmt.Sprintf("sudo mkdir -p %s", task04Dir))
-	fmt.Println("CREATED HOME DIR")
 	ExecuteCmd(fmt.Sprintf("sudo cp -r public/files_output %s", task04Dir))
 
 	ExecuteCmd(fmt.Sprintf("sudo chown -R %s:%s %s", p.admin, p.user, task04Dir))
