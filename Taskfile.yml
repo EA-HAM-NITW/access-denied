@@ -1,0 +1,7 @@
+version: "3"
+
+tasks:
+  gen:
+    cmds:
+      - go build -o dist/cli
+      - go run . gen -teams=datasets/teams.csv -admin=$USER

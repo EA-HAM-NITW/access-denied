@@ -32,6 +32,7 @@ func task04Evaluator(cmd, desiredOutput string) {
 		fmt.Println("wrong")
 	}
 }
+
 func EvalCmdHandler() {
 	currentDir, err := os.Getwd()
 	if err != nil {
@@ -80,7 +81,6 @@ func EvalCmdHandler() {
 		task01Evaluator(answerCmd, gameState.Task01Answer)
 	case 4:
 		task04Evaluator(answerCmd, gameState.Task04Answer)
-
 	default:
 		fmt.Println("invalid task number")
 		os.Exit(1)

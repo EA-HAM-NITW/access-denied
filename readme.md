@@ -1,11 +1,10 @@
-# Access Denied 
- 
-```
-This game has been created by the EA&HAM Club, National Institute of Technology Warangal, as part of "Lunaris" (aka EA&HAM Weekend) 
-``` 
+# access-denied
 
-## Build the CLI
+## setup
 
-```
-go build -o dist/cli
-```
+1. install golang - https://go.dev
+2. install taskfile - https://taskfile.dev/
+
+## usage
+
+1. to run mass generating script, run `task gen`

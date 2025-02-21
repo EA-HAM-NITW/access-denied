@@ -78,9 +78,7 @@ func (p TaskPopulater) task01() {
 		long := record[10]
 
 		if pincode == strconv.Itoa(110000+p.teamNumber) {
-			gameState = GameState{
-				Task01Answer: lat + " " + long,
-			}
+			gameState.Task01Answer = lat + " " + long
 			break
 		}
 	}
@@ -111,11 +109,9 @@ func (p TaskPopulater) task02() {
 
 func (p TaskPopulater) task04() {
 	task04Dir := fmt.Sprintf("/home/%s/404/04", p.user)
+
 	ExecuteCmd(fmt.Sprintf("sudo mkdir -p %s", task04Dir))
 	ExecuteCmd(fmt.Sprintf("sudo cp -r public/files_output %s", task04Dir))
-
-	ExecuteCmd(fmt.Sprintf("sudo chown -R %s:%s %s", p.admin, p.user, task04Dir))
-	ExecuteCmd(fmt.Sprintf("sudo chmod -R 640 %s", task04Dir))
 
 	ExecuteCmd(fmt.Sprintf("sudo touch %s/script.sh", task04Dir))
 	ExecuteCmd(fmt.Sprintf("sudo chown %s:%s %s/script.sh", p.admin, p.user, task04Dir))

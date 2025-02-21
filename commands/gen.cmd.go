@@ -7,10 +7,25 @@ import (
 	"os"
 )
 
-func GenCmdHandler() {
-	var file string
-	fmt.Println("enter path for the csv file")
-	fmt.Scanln(&file)
+func GenCmdHandler(teamsCsvFile, adminUsername string) {
+	file := teamsCsvFile
+	admin := adminUsername
+
+	if teamsCsvFile == "" {
+		var teamsDataset string
+		fmt.Println("enter path for the csv file")
+		fmt.Scanln(&file)
+
+		file = teamsDataset
+	}
+
+	if adminUsername == "" {
+		var adminAccount string
+		fmt.Println("enter admin username")
+		fmt.Scanln(&admin)
+
+		admin = adminAccount
+	}
 
 	f, err := os.Open(file)
 	if err != nil {
@@ -18,10 +33,6 @@ func GenCmdHandler() {
 		return
 	}
 	defer f.Close()
-
-	var admin string
-	fmt.Println("enter admin username")
-	fmt.Scanln(&admin)
 
 	reader := csv.NewReader(f)
 	records, err := reader.ReadAll()
@@ -66,5 +77,7 @@ func GenCmdHandler() {
 
 		taskPopulater := helpers.NewTaskPopulater(name, admin, i)
 		taskPopulater.Populate()
+
+		helpers.ExecuteCmd(fmt.Sprintf("sudo chown -R %s:%s /home/%s/.local/share", name, admin, name))
 	}
 }

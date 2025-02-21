@@ -33,8 +33,8 @@ func ExecuteCmd(expr string) {
 }
 
 func GetCmdOutput(expr string) string {
-	parts := strings.Split(expr, " ")
-	cmd := exec.Command(parts[0], parts[1:]...)
+	cmd := exec.Command("bash", "-c", expr)
+
 	outputBytes, err := cmd.Output()
 	if err != nil {
 		fmt.Println(err.Error())
@@ -42,9 +42,6 @@ func GetCmdOutput(expr string) string {
 	}
 
 	output := strings.TrimSpace(string(outputBytes))
-	output = strings.TrimPrefix(output, "\"")
-	output = strings.TrimSuffix(output, "\"")
-
 	return output
 }
 
