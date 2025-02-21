@@ -33,11 +33,10 @@ func GenCmdHandler() {
 	for i := 1; i < len(records); i++ {
 		name := records[i][0]
 		password := records[i][1] + "RAM"
-
 		fmt.Printf("generating an user with name %s and password %s\n", name, password)
 
 		helpers.ExecuteCmd(fmt.Sprintf("sudo useradd -m -s /bin/bash %s", name))
-		helpers.ExecuteCmd(fmt.Sprintf("echo %s:%s | sudo chpasswd", name, password))
+		helpers.ExecuteCmd(fmt.Sprintf("sudo passwd %s", name))
 		helpers.ExecuteCmd(fmt.Sprintf("sudo mkdir -p /home/%s/404", name))
 		helpers.ExecuteCmd(fmt.Sprintf("sudo chown -R %s:%s /home/%s", admin, name, name))
 		helpers.ExecuteCmd(fmt.Sprintf("sudo chmod 750 /home/%s", name))
