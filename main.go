@@ -27,8 +27,7 @@ func main() {
 		checkCmd.Parse(os.Args[2:])
 		commands.EvalCmdHandler()
 	default:
-		fmt.Printf("Unknown command: %s\n", os.Args[1])
-		fmt.Println("Available commands: gen, check")
+		fmt.Printf("invalid command: %s", os.Args[1])
 		os.Exit(1)
 	}
 }
