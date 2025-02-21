@@ -51,9 +51,14 @@ func GenCmdHandler(teamsCsvFile, adminUsername string) {
 		helpers.ExecuteCmd(fmt.Sprintf("sudo mkdir -p /home/%s/404", name))
 		helpers.ExecuteCmd(fmt.Sprintf("sudo chown -R %s:%s /home/%s", admin, name, name))
 		helpers.ExecuteCmd(fmt.Sprintf("sudo chmod 750 /home/%s", name))
+
 		helpers.ExecuteCmd(fmt.Sprintf("sudo cp dist/cli /home/%s/cli", name))
 		helpers.ExecuteCmd(fmt.Sprintf("sudo chown %s:%s /home/%s/cli", admin, name, name))
 		helpers.ExecuteCmd(fmt.Sprintf("sudo chmod 750 /home/%s/cli", name))
+
+		helpers.ExecuteCmd(fmt.Sprintf("sudo cp public/reveal /home/%s/reveal", name))
+		helpers.ExecuteCmd(fmt.Sprintf("sudo chown %s:%s /home/%s/reveal", admin, name, name))
+		helpers.ExecuteCmd(fmt.Sprintf("sudo chmod 750 /home/%s/reveal", name))
 
 		bashrcPath := fmt.Sprintf("/home/%s/.bashrc", name)
 		f, err := os.OpenFile(bashrcPath, os.O_APPEND|os.O_WRONLY, 0644)
