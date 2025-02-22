@@ -71,6 +71,10 @@ func EvalCmdHandler() {
 		taskEvaluator(answerCmd, gameState.Task03Answer)
 	case 4:
 		taskEvaluator(answerCmd, gameState.Task04Answer)
+	case 5:
+		taskEvaluator(answerCmd, gameState.Task05Answer)
+	case 6:
+		taskEvaluator(answerCmd, gameState.Task06Answer)
 	default:
 		fmt.Println("invalid task number")
 		os.Exit(1)

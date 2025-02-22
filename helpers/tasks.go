@@ -19,6 +19,8 @@ type GameState struct {
 	Task02Answer string
 	Task03Answer string
 	Task04Answer string
+	Task05Answer string
+	Task06Answer string
 }
 
 func NewTaskPopulater(user, admin string, teamNumber int) TaskPopulater {
@@ -34,6 +36,8 @@ func (p TaskPopulater) Populate() {
 	p.task02()
 	p.task03()
 	p.task04()
+	p.task05()
+	p.task06()
 }
 
 func (p TaskPopulater) createScriptFile(dir string) {
@@ -124,7 +128,6 @@ func (p TaskPopulater) task02() {
 	p.copyFile("public/tasks/02/index.html", task02Dir, "index.html")
 	p.createScriptFile(task02Dir)
 	p.copyTaskInfoFile(task02Dir)
-
 	p.updateGameState(func(s *GameState) {
 		s.Task02Answer = "phan"
 	})
@@ -139,7 +142,6 @@ func (p TaskPopulater) task03() {
 
 	p.createScriptFile(task03Dir)
 	p.copyTaskInfoFile(task03Dir)
-
 	p.updateGameState(func(s *GameState) {
 		s.Task03Answer = "a4c9vx.phan bfn5wy.phan i3s1fd.phan j5d6ch.phan lm6t0g.phan oy2p8n.phan rk7w4q.phan u8e2hj.phan xqr7p2.phan zt9k3l.phan"
 	})
@@ -159,5 +161,26 @@ func (p TaskPopulater) task04() {
 }
 
 func (p TaskPopulater) task05() {
-	
+	task05Dir := fmt.Sprintf("/home/%s/404/05", p.user)
+
+	ExecuteCmd(fmt.Sprintf("sudo mkdir -p %s", task05Dir))
+
+	p.createScriptFile(task05Dir)
+	p.copyTaskInfoFile(task05Dir)
+	p.updateGameState(func(s *GameState) {
+		s.Task05Answer = "MONEY"
+	})
+}
+
+func (p TaskPopulater) task06() {
+	task06Dir := fmt.Sprintf("/home/%s/404/06", p.user)
+
+	ExecuteCmd(fmt.Sprintf("sudo mkdir -p %s", task06Dir))
+
+	p.createScriptFile(task06Dir)
+	p.copyTaskInfoFile(task06Dir)
+	p.copyFile("public/tasks/06/names.txt", task06Dir, "names.txt")
+	p.updateGameState(func(s *GameState) {
+		s.Task06Answer = "AccessGranted"
+	})
 }
