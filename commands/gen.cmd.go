@@ -5,6 +5,7 @@ import (
 	"encoding/csv"
 	"fmt"
 	"os"
+	"strconv"
 )
 
 func GenCmdHandler(teamsCsvFile, adminUsername string) {
@@ -76,9 +77,22 @@ func GenCmdHandler(teamsCsvFile, adminUsername string) {
 			}
 		}
 
-		helpers.ExecuteCmd(fmt.Sprintf("sudo cp public/.bashrc /home/%s/.bashrc", name))
-		helpers.ExecuteCmd(fmt.Sprintf("sudo chown %s:%s /home/%s/.bashrc", name, admin, name))
-		helpers.ExecuteCmd(fmt.Sprintf("sudo chmod 644 /home/%s/.bashrc", name))
+		bashrcBytes, err := os.ReadFile("public/.bashrc")
+		if err != nil {
+			fmt.Println(err.Error())
+			continue
+		}
+
+		bashrcContent := fmt.Sprintf("export TEAM_ID=%s\n", strconv.Itoa(i)) + string(bashrcBytes)
+
+		if err := os.WriteFile(fmt.Sprintf("/home/%s/.bashrc", name), []byte(bashrcContent), 0644); err != nil {
+			fmt.Println(err.Error())
+			continue
+		}
+
+		// helpers.ExecuteCmd(fmt.Sprintf("sudo cp public/.bashrc /home/%s/.bashrc", name))
+		// helpers.ExecuteCmd(fmt.Sprintf("sudo chown %s:%s /home/%s/.bashrc", name, admin, name))
+		// helpers.ExecuteCmd(fmt.Sprintf("sudo chmod 644 /home/%s/.bashrc", name))
 
 		taskPopulater := helpers.NewTaskPopulater(name, admin, i)
 		taskPopulater.Populate()
