@@ -1,1 +1,1 @@
-Environment variable is `MONEY`
+Environment variable is `PHANTOMVAR`
