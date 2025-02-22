@@ -42,7 +42,7 @@ func (p TaskPopulater) Populate() {
 
 func (p TaskPopulater) createScriptFile(dir string) {
 	ExecuteCmd(fmt.Sprintf("sudo touch %s/script.sh", dir))
-	ExecuteCmd(fmt.Sprintf("sudo chown %s:%s %s/script.sh", p.admin, p.user, dir))
+	ExecuteCmd(fmt.Sprintf("sudo chown %s %s/script.sh", p.user, dir))
 	ExecuteCmd(fmt.Sprintf("sudo chmod 770 %s/script.sh", dir))
 }
 
